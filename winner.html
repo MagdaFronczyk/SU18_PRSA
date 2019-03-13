@@ -1,0 +1,146 @@
+<div class="@(String.Format("TemplateBox ImgTitleLead ID-{0} {1}", Model.IdBoxInstance, Model.Config.SlideEnabled ? "cycle" : ""))">
+        @if(Model.Config.BoxTitle.Text.Length != 0) {
+        <header>
+          @if(Model.Config.BoxTitle.HasLink) {
+          <a class="box-title" href="@Model.BoxTitle.Url">
+            <span>
+            </span>
+            <span data-hover="@Model.Config.BoxTitle.Text">
+              @Model.Config.BoxTitle.Text
+            </span>
+            <span class="more">
+            </span>
+            <span>
+            </span>
+          </a>
+          }
+          else {
+          <span class="box-title">
+            <span>
+            </span>
+            <span>
+              @Model.Config.BoxTitle.Text
+            </span>
+            <span>
+            </span>
+          </span>
+          }
+        </header>
+        }  
+        <section class="articles-count-@Model.Articles.Count section">
+          
+          @foreach(var article in Model.Articles) { 
+          
+          var link=Model.Config.IsGallery ?  String.Format("/{0}/{1}/Galeria/{2}", @article.SectionId, @article.CategoryId, @article.IdDocumentBase) : String.Format("{0}",@article.Link);
+          var cssclass=Model.Config.IsGallery ? "gallery" : "";
+          
+          <article class="ID-@article.IdDocumentBase article">
+            <a href="@link" class="@cssclass" title="@article.Title" data-layer="@Model.Config.ShowGalleryOnLayer">
+              <span class="positioner">
+                <span class="img" style="background-image: url(@(article.Photo != null ? String.Format("//static.prsa.pl/images/{0}.jpg?format={1}", @article.Photo.UID, @Model.Config.PhotoFormat) : ""));">
+                  <span class="mask">
+                  </span>
+                </span>
+              </span>
+            </a>
+            <div class="paragraphs">
+                    <h2>
+                            @if (article.HasAny("Audio","Video","Embed","Gallery") || Model.Config.IsGallery || article.CustomFields["extra"] != "") {			
+                            <span class="added-info">
+                              @if (article.CustomFields["extra"] != "") {
+                              <span class="extra">
+                                @article.CustomFields["extra"]
+                              </span>
+                              }
+                              @if (article.HasAny("Audio")) {
+                              <i class="fa fa-volume-up ico-pr" title="materiał z dźwiękiem">
+                              </i>
+                              }
+                              @if (article.HasAny("Video","Embed")) {
+                              <i class="fa fa-video-camera ico-pr" title="materiał z filmem">
+                              </i>
+                              }	
+                              @if (article.HasAny("Gallery") || Model.Config.IsGallery ) {
+                              <i class="fa fa-camera ico-pr" title="materiał z galerią zdjęć">
+                              </i>
+                              }		
+                            </span>
+                            }  
+                            @article.ShortTitle
+                    </h2>
+                    <span class="lead">
+                            @article.Lead.Cut(160)
+                            @if(article.Lead.IsTruncated(160))
+                            {
+                            <span class="more">
+                              ...
+                            </span>
+                            }        
+                    </span>
+            </div>
+          </article>
+          }
+          
+        </section>
+        
+        @if (Model.Config.SlideEnabled || Model.Config.SlideMobileEnabled) {  
+        <nav>
+          <div class="prev forClick"  id="@(String.Format("prev_{0}", Model.IdBoxInstance))">
+          </div>
+          <div class="next forClick"  id="@(String.Format("next_{0}", Model.IdBoxInstance))">
+          </div>
+          <div class="pager">
+          </div>
+        </nav>
+        } 
+        
+      </div>
+
+      <style>
+          .srebrne-usta-2019-winner article{
+              display: flex;
+              flex-direction: column;
+          }
+
+          .srebrne-usta-2019-winner .paragraphs {
+            font-family: 'Titillium Web', sans-serif;
+            color:  #ffffff;
+          }
+
+          .srebrne-usta-2019-winner a .img {
+            height: 323px;
+          }
+
+          @media (min-width: 750px){
+
+            .srebrne-usta-2019-winner article{
+                display: flex;
+                flex-direction: row;
+          }
+
+          .srebrne-usta-2019-winner a, .paragraphs {
+              flex-basis: 50%;
+          }
+
+          .srebrne-usta-2019-winner .paragraphs {
+            padding: 18px 38px;
+          }
+
+            }
+
+  @media (max-width: 768px) {
+                .srebrne-usta-2019-winner a .img {
+                    padding-bottom: 56.25%;
+                    height: 1px;
+          }
+            }
+
+ .srebrne-usta-2019-winner  .ImgTitleLead .article .lead {
+              margin-bottom: 0px;
+            }
+
+            .srebrne-usta-2019-winner section {
+              margin-bottom: 0px;
+            }
+
+      </style>

@@ -1,0 +1,445 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#ajax-wrap-page {
+  background-color: #000000;
+  background-image: url(//static.prsa.pl/d01593f6-e7b9-4119-b8d2-41ae35f8cec8.file);
+  background-repeat: no-repeat;
+}
+
+#ajax-wrap-page .container {
+  background-color: transparent;
+}
+
+#ajax-wrap-page .container .mobile-menu {
+  display: none;
+}
+
+/* header logo */
+
+#ajax-wrap-page .srebrne-usta-2019-logo_wrapper {
+  position: relative;
+  padding-top: 56.25%;
+  max-width: 330px;
+  height: 309px;
+  margin: 0 auto;
+}
+
+#ajax-wrap-page .srebrne-usta-2019-logo_img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+}
+
+#ajax-wrap-page .srebrne-usta-2019-logo_menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+#ajax-wrap-page .srebrne-usta-2019-logo_menu_item {
+  position: relative;
+  padding-left: 20px;
+}
+
+#ajax-wrap-page .srebrne-usta-2019-logo_menu_item a {
+  font-family: 'Titillium Web', sans-serif;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16.52px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#ajax-wrap-page .srebrne-usta-2019-logo_menu_item:first-child::after {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 0 5px;
+  position: absolute;
+  top: 50%;
+  left: 105%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#ajax-wrap-page .srebrne-usta-2019-logo_menu_item a:hover {
+  color: rgba(255, 255, 255, 1)
+}
+
+/* header info */
+
+.srebrne-usta-2019-header-info .srebrne-usta-2019-info {
+  font-family: 'Titillium Web', sans-serif;
+  color: #ffffff;
+}
+
+.srebrne-usta-2019-header-info .srebrne-usta-2019-info_uppercase {
+  text-transform: uppercase;
+  font-size: 16.67px;
+  font-weight: 400;
+}
+
+.srebrne-usta-2019-header-info .srebrne-usta-2019-info_lowercase {
+  color: #ffffff;
+  font-size: 12.48px;
+  font-weight: 400;
+}
+
+.srebrne-usta-2019-header-info .srebrne-usta-2019-info_rules {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.srebrne-usta-2019-header-info .srebrne-usta-2019-info_rules a {
+  color: rgba(255, 255, 255, 0.5);
+  position: relative;
+  font-size: 20.78px;
+  font-weight: 400;
+  padding-right: 15px;
+}
+
+.srebrne-usta-2019-header-info .srebrne-usta-2019-info_rules a::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+
+.srebrne-usta-2019-header-info .srebrne-usta-2019-info_rules a::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.srebrne-usta-2019-header-info .srebrne-usta-2019-info_rules a:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+@media (min-width: 767px) {
+  .srebrne-usta-2019-header-info .srebrne-usta-2019-info {
+    padding-top: 30%;
+  }
+}
+  /* ranking */
+
+  .srebrne-usta-2019-ranking__header {
+    margin: 30px 0 30px 0;
+    border-bottom: 0px;
+    font-family: 'Titillium Web', sans-serif;
+    color: rgba(255, 255, 255, 1);
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .srebrne-usta-2019-ranking {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+
+  .ranking_contestant {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    height: 457px;
+    width: 217px;
+    margin: 0 15px 15px 0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    position: relative
+  }
+
+  .ranking_contestant_img {
+    -o-object-fit: cover;
+    object-fit: cover;
+    width: 217px;
+    height: 126px;
+    border-radius: 5px 5px 0 0;
+    font-family: 'object-fit: cover;';
+  }
+
+  .ranking_contestant_img-wrapper {
+    position: relative;
+  }
+
+  .ranking_contestant_play {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background-color: rgb(207, 5, 110);
+    border: 0px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    outline: none;
+  }
+
+  .fa-play {
+    font-size: 24px;
+    color: #ffffff;
+  }
+
+  .ranking_contestant_description,
+  .ranking_contestant_button,
+  .ranking_contestant_button--disabled {
+    margin: 0 19px;
+  }
+
+  .ranking_contestant_title {
+    font-family: 'Titillium Web', sans-serif;
+    color: #000000;
+    font-size: 20.5px;
+    font-weight: 600;
+    margin: 26px 19px;
+  }
+
+  .ranking_contestant_description {
+    font-family: 'Titillium Web', sans-serif;
+    color: #000000;
+    font-size: 12.5px;
+    font-weight: 400;
+  }
+
+  .ranking_contestant_button {
+    height: 41px;
+    background-color: rgb(207, 5, 110);
+    border: 0px;
+    color: #ffffff;
+    font-size: 13.58px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: auto;
+  }
+
+  .ranking_contestant_button--disabled {
+    background-color: #b3b3b3;
+    height: 41px;
+    border: 0px;
+    color: #ffffff;
+    font-size: 13.58px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: auto;
+  }
+
+  .sound-bars {
+    height: 20px;
+    position: absolute;
+    width: 20px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
+  .bar {
+    background: #fff;
+    bottom: 1px;
+    height: 3px;
+    position: absolute;
+    width: 3px;
+    -webkit-animation: sound 0ms -800ms linear infinite alternate;
+    animation: sound 0ms -800ms linear infinite alternate;
+  }
+
+  .ranking_contestant--disabled {
+    background-image: url("//static.prsa.pl/6148f627-7e6d-4bbe-851e-e6e5e437e2a6.file");
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    top: 0;
+    z-index: 10;
+    flex-direction: column;
+  }
+
+  .ranking_contestant--disabled--notvisible {
+    display: none;
+  }
+
+  .ranking_contestant_button--disabled_img {
+    position: relative;
+  }
+
+  .ranking_contestant--disabled_number {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: black;
+    font-size: 54px;
+    color: #ffffff;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 9px;
+    margin-top: -30px;
+  }
+
+  .ranking_contestant--disabled_paragraph {
+    color: #ffffff;
+    font-size: 16.66px;
+    font-weight: 700;
+    font-family: 'Titillium Web', sans-serif;
+    text-transform: uppercase;
+    width: 63px;
+    margin-top: -20px;
+    margin-left: -20px;
+    line-height: 1.2;
+  }
+
+  .ranking_contestant--disabled_logo {
+    margin-top: 42px;
+    height: 28px;
+  }
+
+  @-webkit-keyframes sound {
+    0% {
+      opacity: .35;
+      height: 3px;
+    }
+
+    100% {
+      opacity: 1;
+      height: 20px;
+    }
+  }
+
+  @keyframes sound {
+    0% {
+      opacity: .35;
+      height: 3px;
+    }
+
+    100% {
+      opacity: 1;
+      height: 20px;
+    }
+  }
+
+  .bar:nth-child(1) {
+    left: 1px;
+    -webkit-animation-duration: 474ms;
+    animation-duration: 474ms;
+  }
+
+  .bar:nth-child(2) {
+    left: 5px;
+    -webkit-animation-duration: 433ms;
+    animation-duration: 433ms;
+  }
+
+  .bar:nth-child(3) {
+    left: 9px;
+    -webkit-animation-duration: 407ms;
+    animation-duration: 407ms;
+  }
+
+  .bar:nth-child(4) {
+    left: 13px;
+    -webkit-animation-duration: 458ms;
+    animation-duration: 458ms;
+  }
+
+  .bar:nth-child(5) {
+    left: 17px;
+    -webkit-animation-duration: 400ms;
+    animation-duration: 400ms;
+  }
+
+
+/* archiwmum */
+
+.srebrne-usta-2019-archiwum h2 {
+  font-family: 'Titillium Web', sans-serif;
+  color: rgba(255, 255, 255, 1);
+}
+
+.srebrne-usta-2019-archiwum header {
+  border-bottom: 0px;
+}
+
+header .box-title,
+header .box-title * {
+  font-family: 'Titillium Web', sans-serif;
+  color: rgba(255, 255, 255, 1);
+}
+
+
+/* footer */
+
+.srebrne-usta-2019-footer .srebrne-usta-2019-footer_wrapper {
+  position: relative;
+  /*padding-top: 56.25%;*/
+  max-width: 330px;
+  height: 309px;
+  margin: 0 auto;
+}
+
+.srebrne-usta-2019-footer .srebrne-usta-2019-footer_img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+}
+
+.srebrne-usta-2019-footer {
+  background-image: url("//static.prsa.pl/4ff4e782-02cf-4874-bc84-108003067b7d.file")
+}

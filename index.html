@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.js"></script>
+    <title>Srebrne Usta 2018</title>
+</head>
+
+<body>
+
+    <!-- header -->
+
+    <section class="srebrne-usta-2019-logo">
+        <div class="srebrne-usta-2019-logo_wrapper">
+            <img src="//static.prsa.pl/ba892dc4-5667-43aa-abfc-0c1c4d6973c8.file" alt="" class="srebrne-usta-2019-logo_img">
+        </div>
+        <ul class="srebrne-usta-2019-logo_menu">
+            <li class="srebrne-usta-2019-logo_menu_item">
+                <a href="" target="_blank">
+                    O konkursie
+                </a>
+            </li>
+            <li class="srebrne-usta-2019-logo_menu_item" data-id=".srebrne-usta-2019-archiwum">
+                <a href="">
+                    Archiwum
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <section class="srebrne-usta-2019-info">
+        <p class="srebrne-usta-2019-info_uppercase">nasi srebrnouści politycy - jak co roku - dostarczyli nam kilku
+            barwnych wypowiedzi, teraz czas wybrac
+            najlepszą.</p>
+        <p class="srebrne-usta-2019-info_lowercase">Na głosowanie mają Państwo czas od 9 do 28 marca. Wyniki poznamy 5
+            kwietnia podczas uroczystej gali, która
+            odbędzie się się w Studiu Muzycznym Polskiego Radia im.Agnieszki Osieckiej.</p>
+        <p class="srebrne-usta-2019-info_uppercase">głosować można za pomocą SMS-a z nazwiskiem wybranego kandydata
+            (wiadomość należy wysłać pod numer 71 335) oraz za pośrednictem ponższego formularza, w którym można oddać
+            głos
+            na jednego, dwóch lub trzech kandydatów. Oddanie głosu możliwe jest dopiero po wysłuchaniu całej wypowiedzi
+            polityka.
+            najlepszą.</p>
+        <p class="srebrne-usta-2019-info_lowercase">Przed przystąpieniem do głosowania prosimy o zapoznanie się z
+            REGULAMINEM.</p>
+        <div class="srebrne-usta-2019-info_rules">
+            <a href="" target="_blank">Regulamin</a>
+        </div>
+    </section>
+
+    <!-- ranking -->
+
+    <header class="srebrne-usta-2019-ranking__header">Srebrne Usta 2018 - głosowanie</header>
+    <div id="root"></div>
+
+    <!-- footer -->
+
+    <section>
+        <div class="srebrne-usta-2019-footer_wrapper">
+            <img src="//static.prsa.pl/ba892dc4-5667-43aa-abfc-0c1c4d6973c8.file" alt="" class="srebrne-usta-2019-footer_img">
+        </div>
+    </section>
+    
+    <!-- ranking REACT -->
+
+    <script type="text/babel">
+        class Container extends React.Component {
+            constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+        chosenContestants: [],
+        maxNumberOfVotes: 3,
+        allChosenContestants:[],
+        positiveServerResponse: true
+    };
+    }
+    
+    chooseContestant = (index) => {
+            this.setState({
+                chosenContestants: [index],
+                allChosenContestants: [...this.state.allChosenContestants, index]
+            });
+        };
+        
+    render() {
+        return (
+            <div className="srebrne-usta-2019-ranking">
+            {this.state.data.map((contestant, index) => (
+                <Contestant
+                    key={index}
+                    {...contestant}
+                    vote={(index) => this.chooseContestant(index)}
+                    chosenContestants={this.state.chosenContestants}
+                    maxNumberOfVotes={this.state.maxNumberOfVotes}
+                    numberOfVotes={this.state.chosenContestants.length}
+                    allChosenContestants={this.state.allChosenContestants}
+                    counter={this.state.counter}
+                    positiveServerResponse = {this.state.positiveServerResponse}
+                />
+            ))}
+        </div>
+        );
+    }
+    componentDidUpdate(){
+       const {chosenContestants} = this.state;
+     
+        if (this.state.chosenContestants.length === 1 || this.state.chosenContestants.length === 2 || this.state.chosenContestants === 3) {
+            axios.post("https://sonda.polskieradio.pl/api/probe/vote/1", chosenContestants)
+                .catch(error => {
+                    if (error.response.status === 403) {
+                        swal("Przekroczono dzienny limit głosów", {
+                            buttons: false,
+                            timer: 3000,
+                            });
+                            if (this.state.positiveServerResponse != false) {
+                                this.setState({
+                                positiveServerResponse: false
+                            })
+                            }
+                    }
+                })
+        }
+        }
+    componentDidMount() {
+        const url = "https://sonda.polskieradio.pl/api/probe/getoptions/1";
+    
+        axios.get(url)
+            .then(result => {
+            this.setState({
+                data: result.data
+            });
+        });
+    }
+    }
+    
+    class Contestant extends React.Component {
+            constructor(props) {
+        super(props);
+        this.state = {
+        active: false,
+        soundBars: false,
+        audio: null,
+        audioFinished: false
+    };
+    }
+    
+    componentDidMount() {
+            this.setState({
+                audio: new Audio(this.props.Sound)
+            });
+        }
+        
+    toggleButtonClass() {
+            this.setState({
+                active: !this.state.active
+            });
+        }
+        
+    toggleSoundBars() {
+            this.setState({
+                soundBars: !this.state.soundBars
+            }, () => {
+                this.state.soundBars === false ? this.state.audio.pause() : this.state.audio.play();
+            });
+        }
+        
+    chooseContestant = (e) => {
+            e.preventDefault();
+        this.setState({
+            audioFinished: true,
+    });
+    this.props.vote(this.props.Id);
+    };
+    
+    playRecording = (audio, e) => {
+            e.preventDefault();
+        audio.load();
+        audio.play();
+        this.toggleSoundBars();
+        audio.onended = () => {
+            this.toggleButtonClass();
+        this.toggleSoundBars();
+    };
+    
+    };
+    
+    render() {
+    
+        return (
+            <div className="ranking_contestant">
+            <div className="ranking_contestant_img-wrapper">
+                <img className="ranking_contestant_img"
+                    src={this.props.ImagePath} />
+                <button className="ranking_contestant_play"
+                    onClick={(e) => this.playRecording(this.state.audio, e)}>
+                    <i className={this.state.soundBars ? "null" : "fa fa-play"}></i>
+                    <div className={this.state.soundBars ? "sound-bars" : "null"}>
+                        <div className={this.state.soundBars ? "bar" : "null"}></div>
+                        <div className={this.state.soundBars ? "bar" : "null"}></div>
+                        <div className={this.state.soundBars ? "bar" : "null"}></div>
+                        <div className={this.state.soundBars ? "bar" : "null"}></div>
+                        <div className={this.state.soundBars ? "bar" : "null"}></div>
+                    </div>
+                </button>
+            </div>
+            <h2 className="ranking_contestant_title">
+                {this.props.Name}
+            </h2>
+            <p className="ranking_contestant_description">
+                {this.props.Description}
+            </p>
+            <button
+                className={this.state.active && (this.props.allChosenContestants.length < this.props.maxNumberOfVotes) && this.props.positiveServerResponse ?
+                    "ranking_contestant_button" :
+                    "ranking_contestant_button--disabled"}
+                disabled={this.props.allChosenContestants.length >= this.props.maxNumberOfVotes || !this.state.active || !this.props.positiveServerResponse}
+                onClick={(e) => this.chooseContestant(e)}>
+                Zagłosuj
+                </button>
+            <div className={this.state.audioFinished && this.props.positiveServerResponse ? "ranking_contestant--disabled" :
+                "ranking_contestant--disabled--notvisible"}>
+                <img src="//static.prsa.pl/c90e3030-89e7-42ce-9239-a13c8f0353fa.file" alt=""
+                    className="ranking_contestant--disabled_img" />
+                <div className="ranking_contestant--disabled_number">
+                    {this.props.allChosenContestants.indexOf(this.props.Id) + 1}
+                </div>
+                <p className="ranking_contestant--disabled_paragraph">Głos został oddany</p>
+                <img src="//static.prsa.pl/d2b0aeae-583c-4f22-816b-4b68034760f2.file" className="ranking_contestant--disabled_logo"></img>
+            </div>
+        </div>
+        );
+    }
+    }
+    
+    class App extends React.Component {
+            render() {
+        return <Container />;
+    }
+    }
+    
+    ReactDOM.render(<App />, document.getElementById("root"));
+        
+    </script>
+
+    <!-- scroll -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            $(".srebrne-usta-2019-logo_menu li").click(function (e) {
+                e.preventDefault();
+                $('html,body').scrollTo($(this).data('id'), {
+                    offset: -80,
+                    duration: 500,
+                    easing: 'swing'
+
+                });
+            });
+
+        });
+    </script>
+
+<!--  object-fit polyfill -->
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            objectFitImages();
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,476 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.js"></script>
+
+<header class="srebrne-usta-2019-ranking__header">Srebrne Usta 2018 - głosowanie</header>
+<div id="root"></div>
+
+<!-- 
+<script>
+  document.addEventListener("DOMContentLoaded", function (event) {
+      objectFitImages();
+  });
+</script> -->
+
+  <!-- ranking REACT -->
+
+  <script type="text/babel">
+    class Container extends React.Component {
+        constructor(props) {
+    super(props);
+    this.state = {
+    data: [],
+    chosenContestants: [],
+    maxNumberOfVotes: 3,
+    allChosenContestants:[],
+    positiveServerResponse: true
+};
+}
+
+chooseContestant = (index) => {
+        this.setState({
+            chosenContestants: [index],
+            allChosenContestants: [...this.state.allChosenContestants, index]
+        });
+    };
+    
+render() {
+    return (
+        <div className="srebrne-usta-2019-ranking">
+        {this.state.data.map((contestant, index) => (
+            <Contestant
+                key={index}
+                {...contestant}
+                vote={(index) => this.chooseContestant(index)}
+                chosenContestants={this.state.chosenContestants}
+                maxNumberOfVotes={this.state.maxNumberOfVotes}
+                numberOfVotes={this.state.chosenContestants.length}
+                allChosenContestants={this.state.allChosenContestants}
+                counter={this.state.counter}
+                positiveServerResponse = {this.state.positiveServerResponse}
+            />
+        ))}
+    </div>
+    );
+}
+componentDidUpdate(){
+   const {chosenContestants} = this.state;
+ 
+    if (this.state.chosenContestants.length === 1 || this.state.chosenContestants.length === 2 || this.state.chosenContestants === 3) {
+        axios.post("https://sonda.polskieradio.pl/api/probe/vote/1", chosenContestants)
+            .catch(error => {
+                if (error.response.status === 403) {
+                    swal("Przekroczono dzienny limit głosów", {
+                        buttons: false,
+                        timer: 3000,
+                        });
+                        if (this.state.positiveServerResponse != false) {
+                            this.setState({
+                            positiveServerResponse: false
+                        })
+                        }
+                }
+            })
+    }
+    }
+componentDidMount() {
+    const url = "https://sonda.polskieradio.pl/api/probe/getoptions/1";
+
+    axios.get(url)
+        .then(result => {
+        this.setState({
+            data: result.data
+        });
+    });
+}
+}
+
+class Contestant extends React.Component {
+        constructor(props) {
+    super(props);
+    this.state = {
+    active: false,
+    soundBars: false,
+    audio: null,
+    audioFinished: false
+};
+}
+
+componentDidMount() {
+        this.setState({
+            audio: new Audio(this.props.Sound)
+        });
+    }
+    
+toggleButtonClass() {
+        this.setState({
+            active: !this.state.active
+        });
+    }
+    
+toggleSoundBars() {
+        this.setState({
+            soundBars: !this.state.soundBars
+        }, () => {
+            this.state.soundBars === false ? this.state.audio.pause() : this.state.audio.play();
+        });
+    }
+    
+chooseContestant = (e) => {
+        e.preventDefault();
+    this.setState({
+        audioFinished: true,
+});
+this.props.vote(this.props.Id);
+};
+
+playRecording = (audio, e) => {
+        e.preventDefault();
+    // audio.load();
+    audio.play();
+    this.toggleSoundBars();
+    audio.onended = () => {
+        this.toggleButtonClass();
+    this.toggleSoundBars();
+};
+
+};
+
+render() {
+
+    return (
+        <div className="ranking_contestant">
+        <div className="ranking_contestant_img-wrapper">
+            <img className="ranking_contestant_img"
+                src={this.props.ImagePath} />
+            <button className="ranking_contestant_play"
+                onClick={(e) => this.playRecording(this.state.audio, e)}>
+                <i className={this.state.soundBars ? "null" : "fa fa-play"}></i>
+                <div className={this.state.soundBars ? "sound-bars" : "null"}>
+                    <div className={this.state.soundBars ? "bar" : "null"} />
+                    <div className={this.state.soundBars ? "bar" : "null"} />
+                    <div className={this.state.soundBars ? "bar" : "null"} />
+                    <div className={this.state.soundBars ? "bar" : "null"} />
+                    <div className={this.state.soundBars ? "bar" : "null"} />
+                </div>
+            </button>
+        </div>
+        <h2 className="ranking_contestant_title">
+            {this.props.Name}
+        </h2>
+        <p className="ranking_contestant_description">
+            {this.props.Description}
+        </p>
+        <button
+            className={this.state.active && (this.props.allChosenContestants.length < this.props.maxNumberOfVotes) && this.props.positiveServerResponse ?
+                "ranking_contestant_button" :
+                "ranking_contestant_button--disabled"}
+            disabled={this.props.allChosenContestants.length >= this.props.maxNumberOfVotes || !this.state.active || !this.props.positiveServerResponse}
+            onClick={(e) => this.chooseContestant(e)}>
+            Zagłosuj
+        </button>
+        <div className={this.state.audioFinished && this.props.positiveServerResponse ? "ranking_contestant--disabled" :
+            "ranking_contestant--disabled--notvisible"}>
+            <img src="//static.prsa.pl/c90e3030-89e7-42ce-9239-a13c8f0353fa.file" alt=""
+                className="ranking_contestant--disabled_img" />
+            <div className="ranking_contestant--disabled_number">
+                {this.props.allChosenContestants.indexOf(this.props.Id) + 1}
+            </div>
+            <p className="ranking_contestant--disabled_paragraph">Głos został oddany</p>
+            <img src="//static.prsa.pl/d2b0aeae-583c-4f22-816b-4b68034760f2.file" className="ranking_contestant--disabled_logo"></img>
+        </div>
+    </div>
+    );
+}
+}
+
+class App extends React.Component {
+        render() {
+    return <Container />;
+}
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+    
+</script>
+
+
+<!-- scroll -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        objectFitImages();
+
+        $(".srebrne-usta-2019-logo_menu li").click(function (e) {
+            e.preventDefault();
+            $('html,body').scrollTo($(this).data('id'), {
+                offset: -80,
+                duration: 500,
+                easing: 'swing'
+
+            });
+        });
+
+    });
+</script>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+  /* ranking */
+
+  .srebrne-usta-2019-ranking__header {
+    margin: 30px 0 30px 0;
+    border-bottom: 0px;
+    font-family: 'Titillium Web', sans-serif;
+    color: rgba(255, 255, 255, 1);
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .srebrne-usta-2019-ranking {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+
+  .ranking_contestant {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    height: 457px;
+    width: 217px;
+    margin: 0 15px 15px 0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    position: relative
+  }
+
+  .ranking_contestant_img {
+    -o-object-fit: cover;
+    object-fit: cover;
+    width: 217px;
+    height: 126px;
+    border-radius: 5px 5px 0 0;
+    font-family: 'object-fit: cover;';
+  }
+
+  .ranking_contestant_img-wrapper {
+    position: relative;
+  }
+
+  .ranking_contestant_play {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background-color: rgb(207, 5, 110);
+    border: 0px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    outline: none;
+  }
+
+  .fa-play {
+    font-size: 24px;
+    color: #ffffff;
+  }
+
+  .ranking_contestant_description,
+  .ranking_contestant_button,
+  .ranking_contestant_button--disabled {
+    margin: 0 19px;
+  }
+
+  .ranking_contestant_title {
+    font-family: 'Titillium Web', sans-serif;
+    color: #000000;
+    font-size: 20.5px;
+    font-weight: 600;
+    margin: 40px 19px;
+    height: 25px;
+  }
+
+  .ranking_contestant_description {
+    font-family: 'Titillium Web', sans-serif;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  .ranking_contestant_button {
+    height: 41px;
+    background-color: rgb(207, 5, 110);
+    border: 0px;
+    color: #ffffff;
+    font-size: 13.58px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: auto;
+  }
+
+  .ranking_contestant_button--disabled {
+    background-color: #b3b3b3;
+    height: 41px;
+    border: 0px;
+    color: #ffffff;
+    font-size: 13.58px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: auto;
+  }
+
+  .sound-bars {
+    height: 20px;
+    position: absolute;
+    width: 20px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
+  .bar {
+    background: #fff;
+    bottom: 1px;
+    height: 3px;
+    position: absolute;
+    width: 3px;
+    -webkit-animation: sound 0ms -800ms linear infinite alternate;
+    animation: sound 0ms -800ms linear infinite alternate;
+  }
+
+  .ranking_contestant--disabled {
+    background-image: url("//static.prsa.pl/6148f627-7e6d-4bbe-851e-e6e5e437e2a6.file");
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    top: 0;
+    z-index: 10;
+    flex-direction: column;
+  }
+
+  .ranking_contestant--disabled--notvisible {
+    display: none;
+  }
+
+  .ranking_contestant_button--disabled_img {
+    position: relative;
+  }
+
+  .ranking_contestant--disabled_number {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: black;
+    font-size: 54px;
+    color: #ffffff;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 9px;
+    margin-top: -30px;
+  }
+
+  .ranking_contestant--disabled_paragraph {
+    color: #ffffff;
+    font-size: 16.66px;
+    font-weight: 700;
+    font-family: 'Titillium Web', sans-serif;
+    text-transform: uppercase;
+    width: 63px;
+    margin-top: -20px;
+    margin-left: -20px;
+    line-height: 1.2;
+  }
+
+  .ranking_contestant--disabled_logo {
+    margin-top: 42px;
+    height: 28px;
+  }
+
+  @-webkit-keyframes sound {
+    0% {
+      opacity: .35;
+      height: 3px;
+    }
+
+    100% {
+      opacity: 1;
+      height: 20px;
+    }
+  }
+
+  @keyframes sound {
+    0% {
+      opacity: .35;
+      height: 3px;
+    }
+
+    100% {
+      opacity: 1;
+      height: 20px;
+    }
+  }
+
+  .bar:nth-child(1) {
+    left: 1px;
+    -webkit-animation-duration: 474ms;
+    animation-duration: 474ms;
+  }
+
+  .bar:nth-child(2) {
+    left: 5px;
+    -webkit-animation-duration: 433ms;
+    animation-duration: 433ms;
+  }
+
+  .bar:nth-child(3) {
+    left: 9px;
+    -webkit-animation-duration: 407ms;
+    animation-duration: 407ms;
+  }
+
+  .bar:nth-child(4) {
+    left: 13px;
+    -webkit-animation-duration: 458ms;
+    animation-duration: 458ms;
+  }
+
+  .bar:nth-child(5) {
+    left: 17px;
+    -webkit-animation-duration: 400ms;
+    animation-duration: 400ms;
+  }
+</style>
+

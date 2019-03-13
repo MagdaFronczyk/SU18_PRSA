@@ -1,0 +1,407 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous">
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.js"></script>
+
+<div id="root2"></div>
+
+ <!-- object-fit polyfill -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        objectFitImages();
+    });
+</script>
+
+<!--  stage-3 React -->
+
+<script type="text/babel">
+
+    class ContainerWinners extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                data: []
+            };
+        }
+
+        render() {
+            return (
+                <div className="srebrne-usta-2019-ranking">
+                    {this.state.data.slice(0,3).map((contestant, index) => (
+                        <ContestantWinner
+                            key={index}
+                            index={index}
+                            {...contestant}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
+        componentDidMount() {
+            const url = "https://sonda.polskieradio.pl/api/probe/getoptions/1";
+
+            axios.get(url).then(result => {
+                this.setState({
+                    data: result.data
+                });
+            });
+        }
+    }
+
+    class ContestantWinner extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                active: false,
+                soundBars: false,
+                audio: null,
+                audioFinished: false
+            };
+        }
+
+        componentDidMount() {
+            this.setState({
+                audio: new Audio(this.props.Sound)
+            });
+        }
+
+        toggleSoundBars() {
+            this.setState(
+                {
+                    soundBars: !this.state.soundBars,
+                    active: !this.state.active
+                },
+                () => {
+                    this.state.soundBars === false
+                        ? this.state.audio.pause()
+                        : this.state.audio.play();
+                }
+            );
+        }
+
+        playRecording = (audio, e) => {
+            e.preventDefault();
+            // audio.load();
+            audio.play();
+            this.toggleSoundBars();
+            audio.onended = () => {
+                this.toggleSoundBars();
+            };
+        };
+
+        render() {
+            return (
+                <div className={this.props.index === 0 ? "ranking_contestant--winner" : null}>
+                    <div
+                        className={`${this.props.index === 1 ? "ranking_contestant--2" : "ranking_contestant"} ${this.props.index === 2 ? "ranking_contestant--3" : "ranking_contestant"}`}>
+                        <div className="ranking_contestant_img-wrapper">
+                            <img className="ranking_contestant_img" src={this.props.ImagePath}/>
+                            <button
+                                className="ranking_contestant_play"
+                                onClick={e => this.playRecording(this.state.audio, e)}>
+                                <i className={this.state.soundBars ? "null" : "fa fa-play"}/>
+                                <div className={this.state.soundBars ? "sound-bars" : "null"}>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                </div>
+                            </button>
+                        </div>
+                        <h2 className="ranking_contestant_title">{this.props.Name}</h2>
+                        <p className="ranking_contestant_description">
+                            {this.props.Description}
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+    }
+
+    class AppWinners extends React.Component {
+        render() {
+            return <ContainerWinners/>;
+        }
+    }
+
+    ReactDOM.render(<AppWinners/>, document.getElementById("root2"));
+
+</script>
+
+<!--  stage-3 style -->
+
+<style>
+
+    @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+
+    #root2 .srebrne-usta-2019-ranking__header {
+        margin: 30px 0 30px 0;
+        border-bottom: 0px;
+        font-family: 'Titillium Web', sans-serif;
+        color: rgba(255, 255, 255, 1);
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    #root2 .srebrne-usta-2019-ranking {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+
+    #root2 .ranking_contestant {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        height: 457px;
+        width: 217px;
+        margin: 0 15px 15px 0;
+        border-radius: 8px;
+        background-color: transparent;
+        position: relative
+    }
+
+    #root2 .ranking_contestant--2 {
+        background: url(//static.prsa.pl/881bdbb4-f6f4-41e0-9c7a-76280b70906e.file)
+    }
+
+    #root2 .ranking_contestant--3 {
+        background: url(//static.prsa.pl/844d818c-fb3e-41b0-babf-c1e9d9d0106c.file)
+    }
+
+    #root2 .ranking_contestant_img {
+        -o-object-fit: cover;
+        object-fit: cover;
+        width: 217px;
+        height: 126px;
+        border-radius: 5px 5px 0 0;
+        font-family: 'object-fit: cover;';
+    }
+
+    #root2 .ranking_contestant_img-wrapper {
+        position: relative;
+    }
+
+    #root2 .ranking_contestant_play {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        background-color: rgb(207, 5, 110);
+        border: 0px;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        outline: none;
+    }
+
+    #root2 .fa-play {
+        font-size: 24px;
+        color: #ffffff;
+    }
+
+    #root2 .ranking_contestant_description,
+    #root2 .ranking_contestant_button--disabled {
+        margin: 0 19px;
+    }
+
+    #root2 .ranking_contestant_title {
+        font-family: 'Titillium Web', sans-serif;
+        color: #000000;
+        font-size: 20.5px;
+        font-weight: 600;
+        margin: 40px 19px;
+        height: 25px;
+    }
+
+    #root2 .ranking_contestant_description {
+        font-family: 'Titillium Web', sans-serif;
+        color: #000000;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+
+    #root2 .sound-bars {
+        height: 20px;
+        position: absolute;
+        width: 20px;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    #root2 .bar {
+        background: #fff;
+        bottom: 1px;
+        height: 3px;
+        position: absolute;
+        width: 3px;
+        -webkit-animation: sound 0ms -800ms linear infinite alternate;
+        animation: sound 0ms -800ms linear infinite alternate;
+    }
+
+    #root2 .ranking_contestant--disabled {
+        background-image: url("//static.prsa.pl/6148f627-7e6d-4bbe-851e-e6e5e437e2a6.file");
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        background-repeat: no-repeat;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        top: 0;
+        z-index: 10;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+
+    #root2 .ranking_contestant--disabled--notvisible {
+        display: none;
+    }
+
+    #root2 .ranking_contestant_button--disabled_img {
+        position: relative;
+    }
+
+    #root2 .ranking_contestant--disabled_number {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background-color: black;
+        font-size: 54px;
+        color: #ffffff;
+        font-family: 'Titillium Web', sans-serif;
+        font-weight: 700;
+        text-align: center;
+        padding-top: 9px;
+        margin-top: -30px;
+    }
+
+    #root2 .ranking_contestant--disabled_paragraph {
+        color: #ffffff;
+        font-size: 16.66px;
+        font-weight: 700;
+        font-family: 'Titillium Web', sans-serif;
+        text-transform: uppercase;
+        width: 63px;
+        margin-top: -20px;
+        margin-left: -20px;
+        line-height: 1.2;
+    }
+
+    #root2 .ranking_contestant--disabled_logo {
+        margin-top: 42px;
+        height: 28px;
+    }
+
+    @-webkit-keyframes sound {
+        0% {
+            opacity: .35;
+            height: 3px;
+        }
+
+        100% {
+            opacity: 1;
+            height: 20px;
+        }
+    }
+
+    @keyframes sound {
+        0% {
+            opacity: .35;
+            height: 3px;
+        }
+
+        100% {
+            opacity: 1;
+            height: 20px;
+        }
+    }
+
+    #root2 .bar:nth-child(1) {
+        left: 1px;
+        -webkit-animation-duration: 474ms;
+        animation-duration: 474ms;
+    }
+
+    #root2 .bar:nth-child(2) {
+        left: 5px;
+        -webkit-animation-duration: 433ms;
+        animation-duration: 433ms;
+    }
+
+    #root2 .bar:nth-child(3) {
+        left: 9px;
+        -webkit-animation-duration: 407ms;
+        animation-duration: 407ms;
+    }
+
+    #root2 .bar:nth-child(4) {
+        left: 13px;
+        -webkit-animation-duration: 458ms;
+        animation-duration: 458ms;
+    }
+
+    #root2 .bar:nth-child(5) {
+        left: 17px;
+        -webkit-animation-duration: 400ms;
+        animation-duration: 400ms;
+    }
+
+    #root2 .ranking_contestant_wrapper {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    #root2 .ranking_contestant--winner {
+        height: 457px;
+        width: 466px;
+        background-image: url(//static.prsa.pl/c2e8b1b4-b526-49e6-8016-741795b49fc6.file);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: right;
+        margin: 0 15px 15px 0;
+    }
+
+    
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { 
+    #root2 .ranking_contestant {
+    display: block;
+  }
+  }
+
+
+</style>
