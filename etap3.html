@@ -23,6 +23,7 @@
 <script type="text/babel">
 
     class ContainerWinners extends React.Component {
+        _isMounted = false;
         constructor(props) {
             super(props);
             this.state = {
@@ -45,13 +46,20 @@
         }
 
         componentDidMount() {
+            this._isMounted = true;
             const url = "https://sonda.polskieradio.pl/api/probe/getoptions/1";
 
             axios.get(url).then(result => {
+                if (this._isMounted) {
                 this.setState({
                     data: result.data
                 });
+            }
             });
+        }
+
+        componentWillUnmount() {
+            this._isMounted = false;
         }
     }
 
@@ -387,6 +395,12 @@
     }
 
     #root2 .ranking_contestant--winner {
+        background: url(//static.prsa.pl/881bdbb4-f6f4-41e0-9c7a-76280b70906e.file);
+        background-repeat: no-repeat;
+    }
+
+    @media (min-width: 511px) {
+        #root2 .ranking_contestant--winner {
         height: 457px;
         width: 466px;
         background-image: url(//static.prsa.pl/c2e8b1b4-b526-49e6-8016-741795b49fc6.file);
@@ -394,6 +408,7 @@
         background-repeat: no-repeat;
         background-position: right;
         margin: 0 15px 15px 0;
+    }
     }
 
     
@@ -405,3 +420,6 @@
 
 
 </style>
+
+///////
+
