@@ -1,14 +1,16 @@
+<!-- logo -->
+
 <section class="srebrne-usta-2019-logo">
   <div class="srebrne-usta-2019-logo_wrapper">
-    <img src="//static.prsa.pl/ba892dc4-5667-43aa-abfc-0c1c4d6973c8.file" alt="" class="srebrne-usta-2019-logo_img">
+    <img src="//static.prsa.pl/63997d46-e92c-4140-8444-fbfabf4671f3.file" alt="" class="srebrne-usta-2019-logo_img">
   </div>
   <ul class="srebrne-usta-2019-logo_menu">
     <li class="srebrne-usta-2019-logo_menu_item">
-      <a href="">
+      <a href="/9/29/Artykul/2279941" target="_blank">
         O konkursie
       </a>
     </li>
-    <li class="srebrne-usta-2019-logo_menu_item" data-id=".srebrne-usta-2019-archiwum">
+    <li class="srebrne-usta-2019-logo_menu_item archiwum" data-id=".srebrne-usta-2019-archiwum">
       <a href="">
         Archiwum
       </a>
@@ -16,33 +18,8 @@
   </ul>
 </section>
 
-<section class="srebrne-usta-2019-info">
-  <p class="srebrne-usta-2019-info_uppercase">nasi srebrnouści politycy - jak co roku - dostarczyli nam kilku
-    barwnych wypowiedzi, teraz czas wybrac
-    najlepszą.</p>
-  <p class="srebrne-usta-2019-info_lowercase">Na głosowanie mają Państwo czas od 9 do 28 marca. Wyniki poznamy 5
-    kwietnia podczas uroczystej gali, która
-    odbędzie się się w Studiu Muzycznym Polskiego Radia im.Agnieszki Osieckiej.</p>
-  <p class="srebrne-usta-2019-info_uppercase">głosować można za pomocą SMS-a z nazwiskiem wybranego kandydata
-    (wiadomość należy wysłać pod numer 71 335) oraz za pośrednictem ponższego formularza, w którym można oddać
-    głos
-    na jednego, dwóch lub trzech kandydatów. Oddanie głosu możliwe jest dopiero po wysłuchaniu całej wypowiedzi
-    polityka.
-    najlepszą.</p>
-  <p class="srebrne-usta-2019-info_lowercase">Przed przystąpieniem do głosowania prosimy o zapoznanie się z
-    REGULAMINEM.</p>
-  <div class="srebrne-usta-2019-info_rules">
-    <a href="">Regulamin</a>
-  </div>
-</section>
-
 <style>
   @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
-
-  * {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-  }
 
   #ajax-wrap-page {
     background-color: #000000;
@@ -77,11 +54,7 @@
   }
 
   #ajax-wrap-page .srebrne-usta-2019-logo_menu {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
   }
 
@@ -109,17 +82,49 @@
     position: absolute;
     top: 50%;
     left: 105%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
 
   #ajax-wrap-page .srebrne-usta-2019-logo_menu_item a:hover {
     color: rgba(255, 255, 255, 1)
   }
+</style>
 
-  /* header info */
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
 
+    $(".archiwum").click(function (e) {
+      e.preventDefault();
+      $('html,body').scrollTo($(this).data('id'), {
+        offset: -80,
+        duration: 500,
+        easing: 'swing'
+      });
+    });
+
+  });
+</script>
+
+<!-- info -->
+
+<section class="srebrne-usta-2019-info">
+  <p class="srebrne-usta-2019-info_uppercase">NASI SREBRNOUŚCI POLITYCY - JAK CO ROKU - DOSTARCZYLI NAM KILKU BARWNYCH
+    WYPOWIEDZI, TERAZ CZAS WYBRAC NAJLEPSZĄ.</p>
+  <p class="srebrne-usta-2019-info_lowercase">Na głosowanie mają Państwo czas od 21 marca do 14 kwietnia. Ogłoszenie
+    wyników plebiscytu nastąpi na antenie Trójki 16.04.2019 r.</p>
+  <p class="srebrne-usta-2019-info_uppercase"> GŁOSOWAĆ MOŻNA ZA POMOCĄ SMS-A Z NAZWISKIEM WYBRANEGO KANDYDATA
+    (WIADOMOŚĆ NALEŻY WYSŁAĆ POD NUMER 71 335) ORAZ ZA POŚREDNICTEM PONIŻSZEGO FORMULARZA, W KTÓRYM MOŻNA ODDAĆ GŁOS NA
+    JEDNEGO, DWÓCH LUB TRZECH KANDYDATÓW. ODDANIE GŁOSU MOŻLIWE JEST DOPIERO PO WYSŁUCHANIU CAŁEJ WYPOWIEDZI POLITYKA.
+  </p>
+  <p class="srebrne-usta-2019-info_lowercase">Przed przystąpieniem do głosowania prosimy o zapoznanie się z
+    REGULAMINEM.</p>
+  <div class="srebrne-usta-2019-info_rules">
+    <a href="//static.prsa.pl/895280fa-67a3-4e35-a226-c6ae10372472.file" target="_blank">Regulamin</a>
+  </div>
+</section>
+
+<style>
   .srebrne-usta-2019-header-info .srebrne-usta-2019-info {
     font-family: 'Titillium Web', sans-serif;
     color: #ffffff;
@@ -169,6 +174,7 @@
     transform: translate(-50%, -50%);
   }
 
+
   .srebrne-usta-2019-header-info .srebrne-usta-2019-info_rules a::after {
     content: "";
     display: inline-block;
@@ -190,24 +196,7 @@
 
   @media (min-width: 767px) {
     .srebrne-usta-2019-header-info .srebrne-usta-2019-info {
-      padding-top: 10%;
+      padding-top: 15%;
     }
   }
 </style>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-
-    $(".srebrne-usta-2019-logo_menu li").click(function (e) {
-      e.preventDefault();
-      $('html,body').scrollTo($(this).data('id'), {
-        offset: -80,
-        duration: 500,
-        easing: 'swing'
-
-      });
-    });
-
-  });
-</script>

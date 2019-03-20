@@ -1,9 +1,7 @@
-
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-crossorigin="anonymous">
-<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
@@ -12,457 +10,794 @@ crossorigin="anonymous">
 <header class="srebrne-usta-2019-ranking__header">Srebrne Usta 2018 - głosowanie</header>
 <div id="root"></div>
 
+<!-- object fit lib -->
 
 <script>
-document.addEventListener("DOMContentLoaded", function (event) {
-objectFitImages();
-});
+    document.addEventListener("DOMContentLoaded", function (event) {
+        objectFitImages();
+    });
 </script>
 
 <!-- ranking REACT -->
 
-<script type="text/babel">
-class Container extends React.Component {
-_isMounted = false;
+<script>
+    "use strict";
 
-constructor(props) {
-super(props);
-this.state = {
-data: [],
-chosenContestants: [],
-maxNumberOfVotes: 3,
-allChosenContestants:[],
-positiveServerResponse: true
-};
-}
+    function _instanceof(left, right) {
+        if (
+            right != null &&
+            typeof Symbol !== "undefined" &&
+            right[Symbol.hasInstance]
+        ) {
+            return right[Symbol.hasInstance](left);
+        } else {
+            return left instanceof right;
+        }
+    }
 
-chooseContestant = (index) => {
-this.setState({
-    chosenContestants: [index],
-    allChosenContestants: [...this.state.allChosenContestants, index]
-});
-};
+    function _typeof(obj) {
+        if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+            _typeof = function _typeof(obj) {
+                return typeof obj;
+            };
+        } else {
+            _typeof = function _typeof(obj) {
+                return obj &&
+                    typeof Symbol === "function" &&
+                    obj.constructor === Symbol &&
+                    obj !== Symbol.prototype ?
+                    "symbol" :
+                    typeof obj;
+            };
+        }
+        return _typeof(obj);
+    }
 
-render() {
-return (
-<div className="srebrne-usta-2019-ranking">
-{this.state.data.map((contestant, index) => (
-    <Contestant
-        key={index}
-        {...contestant}
-        vote={(index) => this.chooseContestant(index)}
-        chosenContestants={this.state.chosenContestants}
-        maxNumberOfVotes={this.state.maxNumberOfVotes}
-        numberOfVotes={this.state.chosenContestants.length}
-        allChosenContestants={this.state.allChosenContestants}
-        counter={this.state.counter}
-        positiveServerResponse = {this.state.positiveServerResponse}
-    />
-))}
-</div>
-);
-}
-componentDidMount() {
-this._isMounted = true;
-
-const url = "https://sonda.polskieradio.pl/api/probe/getoptions/1";
-
-axios.get(url)
-.then(result => {
-    if (this._isMounted) {
-this.setState({
-    data: result.data
-})
-}
-});
-}
-
-componentDidUpdate(){
-   const {chosenContestants} = this.state;
- 
-    if (this.state.chosenContestants.length === 1 || this.state.chosenContestants.length === 2 || this.state.chosenContestants === 3) {
-        axios.post("https://sonda.polskieradio.pl/api/probe/vote/1", chosenContestants)
-            .catch(error => {
-                if (error.response.status === 403) {
-                    swal("Przekroczono dzienny limit głosów", {
-                        buttons: false,
-                        timer: 3000,
-                        });
-                        if (this.state.positiveServerResponse != false) {
-                            this.setState({
-                            positiveServerResponse: false
-                        })
+    function _extends() {
+        _extends =
+            Object.assign ||
+            function (target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) {
+                        if (Object.prototype.hasOwnProperty.call(source, key)) {
+                            target[key] = source[key];
                         }
+                    }
                 }
-            })
+                return target;
+            };
+        return _extends.apply(this, arguments);
     }
+
+    function _toConsumableArray(arr) {
+        return (
+            _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread()
+        );
     }
 
-componentWillUnmount() {
-this._isMounted = false;
-}
-}
+    function _nonIterableSpread() {
+        throw new TypeError("Invalid attempt to spread non-iterable instance");
+    }
 
-class Contestant extends React.Component {
-constructor(props) {
-super(props);
-this.state = {
-active: false,
-soundBars: false,
-audio: null,
-audioFinished: false
-};
-}
+    function _iterableToArray(iter) {
+        if (
+            Symbol.iterator in Object(iter) ||
+            Object.prototype.toString.call(iter) === "[object Arguments]"
+        )
+            return Array.from(iter);
+    }
 
-componentDidMount() {
-this.setState({
-    audio: new Audio(this.props.Sound)
-});
-}
+    function _arrayWithoutHoles(arr) {
+        if (Array.isArray(arr)) {
+            for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+                arr2[i] = arr[i];
+            }
+            return arr2;
+        }
+    }
 
-toggleButtonClass() {
-this.setState({
-    active: !this.state.active
-});
-}
+    function _classCallCheck(instance, Constructor) {
+        if (!_instanceof(instance, Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
 
-toggleSoundBars() {
-this.setState({
-    soundBars: !this.state.soundBars
-}, () => {
-    this.state.soundBars === false ? this.state.audio.pause() : this.state.audio.play();
-});
-}
+    function _defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }
 
-chooseContestant = (e) => {
-e.preventDefault();
-this.setState({
-audioFinished: true,
-});
-this.props.vote(this.props.Id);
-};
+    function _createClass(Constructor, protoProps, staticProps) {
+        if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+        if (staticProps) _defineProperties(Constructor, staticProps);
+        return Constructor;
+    }
 
-playRecording = (audio, e) => {
-e.preventDefault();
-// audio.load();
-audio.play();
-this.toggleSoundBars();
-audio.onended = () => {
-this.toggleButtonClass();
-this.toggleSoundBars();
-};
+    function _possibleConstructorReturn(self, call) {
+        if (call && (_typeof(call) === "object" || typeof call === "function")) {
+            return call;
+        }
+        return _assertThisInitialized(self);
+    }
 
-};
+    function _getPrototypeOf(o) {
+        _getPrototypeOf = Object.setPrototypeOf ?
+            Object.getPrototypeOf :
+            function _getPrototypeOf(o) {
+                return o.__proto__ || Object.getPrototypeOf(o);
+            };
+        return _getPrototypeOf(o);
+    }
 
-render() {
+    function _assertThisInitialized(self) {
+        if (self === void 0) {
+            throw new ReferenceError(
+                "this hasn't been initialised - super() hasn't been called"
+            );
+        }
+        return self;
+    }
 
-return (
-<div className="ranking_contestant">
-<div className="ranking_contestant_img-wrapper">
-    <img className="ranking_contestant_img"
-        src={this.props.ImagePath} />
-    <button className="ranking_contestant_play"
-        onClick={(e) => this.playRecording(this.state.audio, e)}>
-        <i className={this.state.soundBars ? "null" : "fa fa-play"}></i>
-        <div className={this.state.soundBars ? "sound-bars" : "null"}>
-            <div className={this.state.soundBars ? "bar" : "null"} />
-            <div className={this.state.soundBars ? "bar" : "null"} />
-            <div className={this.state.soundBars ? "bar" : "null"} />
-            <div className={this.state.soundBars ? "bar" : "null"} />
-            <div className={this.state.soundBars ? "bar" : "null"} />
-        </div>
-    </button>
-</div>
-<h2 className="ranking_contestant_title">
-    {this.props.Name}
-</h2>
-<p className="ranking_contestant_description">
-    {this.props.Description}
-</p>
-<button
-    className={this.state.active && (this.props.allChosenContestants.length < this.props.maxNumberOfVotes) && this.props.positiveServerResponse ?
-        "ranking_contestant_button" :
-        "ranking_contestant_button--disabled"}
-    disabled={this.props.allChosenContestants.length >= this.props.maxNumberOfVotes || !this.state.active || !this.props.positiveServerResponse}
-    onClick={(e) => this.chooseContestant(e)}>
-    Zagłosuj
-</button>
-<div className={this.state.audioFinished && this.props.positiveServerResponse ? "ranking_contestant--disabled" :
-    "ranking_contestant--disabled--notvisible"}>
-    <img src="http://static.prsa.pl/77f4b993-5bb9-4061-a170-c242bafc2a96.file" alt=""
-        className="ranking_contestant--disabled_img" />
-    <div className="ranking_contestant--disabled_number">
-        {this.props.allChosenContestants.indexOf(this.props.Id) + 1}
-    </div>
-    <p className="ranking_contestant--disabled_paragraph">Głos został oddany</p>
-    <img src="//static.prsa.pl/d2b0aeae-583c-4f22-816b-4b68034760f2.file" className="ranking_contestant--disabled_logo"></img>
-</div>
-</div>
-);
-}
-}
+    function _inherits(subClass, superClass) {
+        if (typeof superClass !== "function" && superClass !== null) {
+            throw new TypeError("Super expression must either be null or a function");
+        }
+        subClass.prototype = Object.create(superClass && superClass.prototype, {
+            constructor: {
+                value: subClass,
+                writable: true,
+                configurable: true
+            }
+        });
+        if (superClass) _setPrototypeOf(subClass, superClass);
+    }
 
-class App extends React.Component {
-render() {
-return <Container />;
-}
-}
+    function _setPrototypeOf(o, p) {
+        _setPrototypeOf =
+            Object.setPrototypeOf ||
+            function _setPrototypeOf(o, p) {
+                o.__proto__ = p;
+                return o;
+            };
+        return _setPrototypeOf(o, p);
+    }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+    function _defineProperty(obj, key, value) {
+        if (key in obj) {
+            Object.defineProperty(obj, key, {
+                value: value,
+                enumerable: true,
+                configurable: true,
+                writable: true
+            });
+        } else {
+            obj[key] = value;
+        }
+        return obj;
+    }
 
+    var Container =
+        /*#__PURE__*/
+        (function (_React$Component) {
+            _inherits(Container, _React$Component);
+
+            function Container(props) {
+                var _this;
+
+                _classCallCheck(this, Container);
+
+                _this = _possibleConstructorReturn(
+                    this,
+                    _getPrototypeOf(Container).call(this, props)
+                );
+
+                _defineProperty(_assertThisInitialized(_this), "_isMounted", false);
+
+                _defineProperty(
+                    _assertThisInitialized(_this),
+                    "chooseContestant",
+                    function (index) {
+                        _this.setState({
+                            chosenContestants: [index],
+                            allChosenContestants: [].concat(
+                                _toConsumableArray(_this.state.allChosenContestants),
+                                [index]
+                            )
+                        });
+                    }
+                );
+
+                _this.state = {
+                    data: [],
+                    chosenContestants: [],
+                    maxNumberOfVotes: 3,
+                    allChosenContestants: [],
+                    positiveServerResponse: true
+                };
+                return _this;
+            }
+
+            _createClass(Container, [{
+                    key: "render",
+                    value: function render() {
+                        var _this2 = this;
+
+                        return React.createElement(
+                            "div", {
+                                className: "srebrne-usta-2019-ranking"
+                            },
+                            this.state.data.map(function (contestant, index) {
+                                return React.createElement(
+                                    Contestant,
+                                    _extends({
+                                            key: index
+                                        },
+                                        contestant, {
+                                            vote: function vote(index) {
+                                                return _this2.chooseContestant(index);
+                                            },
+                                            chosenContestants: _this2.state
+                                                .chosenContestants,
+                                            maxNumberOfVotes: _this2.state.maxNumberOfVotes,
+                                            numberOfVotes: _this2.state.chosenContestants
+                                                .length,
+                                            allChosenContestants: _this2.state
+                                                .allChosenContestants,
+                                            counter: _this2.state.counter,
+                                            positiveServerResponse: _this2.state
+                                                .positiveServerResponse
+                                        }
+                                    )
+                                );
+                            })
+                        );
+                    }
+                },
+                {
+                    key: "componentDidMount",
+                    value: function componentDidMount() {
+                        var _this3 = this;
+
+                        this._isMounted = true;
+                        var url = "https://sonda.polskieradio.pl/api/probe/getoptions/1";
+                        axios.get(url).then(function (result) {
+                            if (_this3._isMounted) {
+                                _this3.setState({
+                                    data: result.data
+                                });
+                            }
+                        });
+                    }
+                },
+                {
+                    key: "componentDidUpdate",
+                    value: function componentDidUpdate() {
+                        var _this4 = this;
+
+                        var chosenContestants = this.state.chosenContestants;
+
+                        if (
+                            this.state.chosenContestants.length === 1 ||
+                            this.state.chosenContestants.length === 2 ||
+                            this.state.chosenContestants === 3
+                        ) {
+                            axios
+                                .post(
+                                    "https://sonda.polskieradio.pl/api/probe/vote/1",
+                                    chosenContestants
+                                )
+                                .catch(function (error) {
+                                    if (error.response.status === 403) {
+                                        swal("Przekroczono dzienny limit głosów", {
+                                            buttons: false,
+                                            timer: 3000
+                                        });
+
+                                        if (_this4.state.positiveServerResponse != false) {
+                                            _this4.setState({
+                                                positiveServerResponse: false
+                                            });
+                                        }
+                                    }
+                                });
+                        }
+                    }
+                },
+                {
+                    key: "componentWillUnmount",
+                    value: function componentWillUnmount() {
+                        this._isMounted = false;
+                    }
+                }
+            ]);
+
+            return Container;
+        })(React.Component);
+
+    var Contestant =
+        /*#__PURE__*/
+        (function (_React$Component2) {
+            _inherits(Contestant, _React$Component2);
+
+            function Contestant(props) {
+                var _this5;
+
+                _classCallCheck(this, Contestant);
+
+                _this5 = _possibleConstructorReturn(
+                    this,
+                    _getPrototypeOf(Contestant).call(this, props)
+                );
+
+                _defineProperty(
+                    _assertThisInitialized(_this5),
+                    "chooseContestant",
+                    function (e) {
+                        e.preventDefault();
+
+                        _this5.setState({
+                            audioFinished: true
+                        });
+
+                        _this5.props.vote(_this5.props.Id);
+                    }
+                );
+
+                _defineProperty(_assertThisInitialized(_this5), "playRecording", function (
+                    audio,
+                    e
+                ) {
+                    e.preventDefault(); // audio.load();
+
+                    audio.play();
+
+                    _this5.toggleSoundBars();
+
+                    audio.onended = function () {
+                        _this5.toggleButtonClass();
+
+                        _this5.toggleSoundBars();
+                    };
+                });
+
+                _this5.state = {
+                    active: false,
+                    soundBars: false,
+                    audio: null,
+                    audioFinished: false
+                };
+                return _this5;
+            }
+
+            _createClass(Contestant, [{
+                    key: "componentDidMount",
+                    value: function componentDidMount() {
+                        this.setState({
+                            audio: new Audio(this.props.Sound)
+                        });
+                    }
+                },
+                {
+                    key: "toggleButtonClass",
+                    value: function toggleButtonClass() {
+                        this.setState({
+                            active: !this.state.active
+                        });
+                    }
+                },
+                {
+                    key: "toggleSoundBars",
+                    value: function toggleSoundBars() {
+                        var _this6 = this;
+
+                        this.setState({
+                                soundBars: !this.state.soundBars
+                            },
+                            function () {
+                                _this6.state.soundBars === false ?
+                                    _this6.state.audio.pause() :
+                                    _this6.state.audio.play();
+                            }
+                        );
+                    }
+                },
+                {
+                    key: "render",
+                    value: function render() {
+                        var _this7 = this;
+
+                        return React.createElement(
+                            "div", {
+                                className: "ranking_contestant"
+                            },
+                            React.createElement(
+                                "div", {
+                                    className: "ranking_contestant_img-wrapper"
+                                },
+                                React.createElement("img", {
+                                    className: "ranking_contestant_img",
+                                    src: this.props.ImagePath
+                                }),
+                                React.createElement(
+                                    "button", {
+                                        className: "ranking_contestant_play",
+                                        onClick: function onClick(e) {
+                                            return _this7.playRecording(_this7.state.audio, e);
+                                        }
+                                    },
+                                    React.createElement("i", {
+                                        className: this.state.soundBars ? "null" : "fa fa-play"
+                                    }),
+                                    React.createElement(
+                                        "div", {
+                                            className: this.state.soundBars ? "sound-bars" : "null"
+                                        },
+                                        React.createElement("div", {
+                                            className: this.state.soundBars ? "bar" : "null"
+                                        }),
+                                        React.createElement("div", {
+                                            className: this.state.soundBars ? "bar" : "null"
+                                        }),
+                                        React.createElement("div", {
+                                            className: this.state.soundBars ? "bar" : "null"
+                                        }),
+                                        React.createElement("div", {
+                                            className: this.state.soundBars ? "bar" : "null"
+                                        }),
+                                        React.createElement("div", {
+                                            className: this.state.soundBars ? "bar" : "null"
+                                        })
+                                    )
+                                )
+                            ),
+                            React.createElement(
+                                "h2", {
+                                    className: "ranking_contestant_title"
+                                },
+                                this.props.Name
+                            ),
+                            React.createElement(
+                                "p", {
+                                    className: "ranking_contestant_description"
+                                },
+                                this.props.Description
+                            ),
+                            React.createElement(
+                                "button", {
+                                    className: this.state.active &&
+                                        this.props.allChosenContestants.length <
+                                        this.props.maxNumberOfVotes &&
+                                        this.props.positiveServerResponse ?
+                                        "ranking_contestant_button" :
+                                        "ranking_contestant_button--disabled",
+                                    disabled: this.props.allChosenContestants.length >=
+                                        this.props.maxNumberOfVotes ||
+                                        !this.state.active ||
+                                        !this.props.positiveServerResponse,
+                                    onClick: function onClick(e) {
+                                        return _this7.chooseContestant(e);
+                                    }
+                                },
+                                "Zagłosuj"
+                            ),
+                            React.createElement(
+                                "div", {
+                                    className: this.state.audioFinished && this.props
+                                        .positiveServerResponse ?
+                                        "ranking_contestant--disabled" :
+                                        "ranking_contestant--disabled--notvisible"
+                                },
+                                React.createElement("img", {
+                                    src: "//static.prsa.pl/862db4bf-53e8-4700-971c-ccb069f88b4a.file",
+                                    alt: "",
+                                    className: "ranking_contestant--disabled_img"
+                                }),
+                                React.createElement(
+                                    "div", {
+                                        className: "ranking_contestant--disabled_number"
+                                    },
+                                    this.props.allChosenContestants.indexOf(this.props.Id) + 1
+                                ),
+                                React.createElement(
+                                    "p", {
+                                        className: "ranking_contestant--disabled_paragraph"
+                                    },
+                                    "Głos został oddany"
+                                ),
+                                React.createElement("img", {
+                                    src: "//static.prsa.pl/d2b0aeae-583c-4f22-816b-4b68034760f2.file",
+                                    className: "ranking_contestant--disabled_logo"
+                                })
+                            )
+                        );
+                    }
+                }
+            ]);
+
+            return Contestant;
+        })(React.Component);
+
+    var App =
+        /*#__PURE__*/
+        (function (_React$Component3) {
+            _inherits(App, _React$Component3);
+
+            function App() {
+                _classCallCheck(this, App);
+
+                return _possibleConstructorReturn(
+                    this,
+                    _getPrototypeOf(App).apply(this, arguments)
+                );
+            }
+
+            _createClass(App, [{
+                key: "render",
+                value: function render() {
+                    return React.createElement(Container, null);
+                }
+            }]);
+
+            return App;
+        })(React.Component);
+
+    ReactDOM.render(
+        React.createElement(App, null),
+        document.getElementById("root")
+    );
 </script>
 
-
 <style>
+    .srebrne-usta-2019-ranking__header {
+        margin: 30px 0 30px 0;
+        border-bottom: 0px;
+        font-family: 'Titillium Web', sans-serif;
+        color: rgba(255, 255, 255, 1);
+        font-size: 28px;
+        font-weight: 700;
+    }
 
-@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
-/* ranking */
+    .srebrne-usta-2019-ranking {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
 
-.srebrne-usta-2019-ranking__header {
-margin: 30px 0 30px 0;
-border-bottom: 0px;
-font-family: 'Titillium Web', sans-serif;
-color: rgba(255, 255, 255, 1);
-font-size: 28px;
-font-weight: 700;
-}
+    .ranking_contestant {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        height: 457px;
+        width: 217px;
+        margin: 0 15px 15px 0;
+        border-radius: 8px;
+        background-color: #ffffff;
+        position: relative
+    }
 
-.srebrne-usta-2019-ranking {
-display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
-justify-content: center;
--ms-flex-wrap: wrap;
-flex-wrap: wrap;
-}
+    .ranking_contestant_img {
+        -o-object-fit: cover;
+        object-fit: cover;
+        width: 217px;
+        height: 126px;
+        border-radius: 5px 5px 0 0;
+        font-family: 'object-fit: cover;';
+    }
 
-.ranking_contestant {
-display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
--webkit-box-orient: vertical;
--webkit-box-direction: normal;
--ms-flex-direction: column;
-flex-direction: column;
--webkit-box-pack: justify;
--ms-flex-pack: justify;
-height: 457px;
-width: 217px;
-margin: 0 15px 15px 0;
-border-radius: 8px;
-background-color: #ffffff;
-position: relative
-}
+    .ranking_contestant_img-wrapper {
+        position: relative;
+    }
 
-.ranking_contestant_img {
--o-object-fit: cover;
-object-fit: cover;
-width: 217px;
-height: 126px;
-border-radius: 5px 5px 0 0;
-font-family: 'object-fit: cover;';
-}
+    .ranking_contestant_play {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        background-color: rgb(207, 5, 110);
+        border: 0px;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        outline: none;
+    }
 
-.ranking_contestant_img-wrapper {
-position: relative;
-}
+    .fa-play {
+        font-size: 24px;
+        color: #ffffff;
+    }
 
-.ranking_contestant_play {
-height: 60px;
-width: 60px;
-border-radius: 50%;
-background-color: rgb(207, 5, 110);
-border: 0px;
-position: absolute;
-top: 100%;
-left: 50%;
--webkit-transform: translate(-50%, -50%);
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-outline: none;
-}
+    .ranking_contestant_description,
+    .ranking_contestant_button,
+    .ranking_contestant_button--disabled {
+        margin: 0 19px;
+    }
 
-.fa-play {
-font-size: 24px;
-color: #ffffff;
-}
+    .ranking_contestant_title {
+        font-family: 'Titillium Web', sans-serif;
+        color: #000000;
+        font-size: 20.5px;
+        font-weight: 600;
+        margin: 40px 19px;
+        height: 25px;
+    }
 
-.ranking_contestant_description,
-.ranking_contestant_button,
-.ranking_contestant_button--disabled {
-margin: 0 19px;
-}
+    .ranking_contestant_description {
+        font-family: 'Titillium Web', sans-serif;
+        color: #000000;
+        font-size: 16px;
+        font-weight: 400;
+    }
 
-.ranking_contestant_title {
-font-family: 'Titillium Web', sans-serif;
-color: #000000;
-font-size: 20.5px;
-font-weight: 600;
-margin: 40px 19px;
-height: 25px;
-}
+    .ranking_contestant_button {
+        height: 41px;
+        background-color: rgb(207, 5, 110);
+        border: 0px;
+        color: #ffffff;
+        font-size: 13.58px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-top: auto;
+    }
 
-.ranking_contestant_description {
-font-family: 'Titillium Web', sans-serif;
-color: #000000;
-font-size: 16px;
-font-weight: 400;
-}
+    .ranking_contestant_button--disabled {
+        background-color: #b3b3b3;
+        height: 41px;
+        border: 0px;
+        color: #ffffff;
+        font-size: 13.58px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-top: auto;
+    }
 
-.ranking_contestant_button {
-height: 41px;
-background-color: rgb(207, 5, 110);
-border: 0px;
-color: #ffffff;
-font-size: 13.58px;
-font-weight: 600;
-text-transform: uppercase;
-margin-top: auto;
-}
+    .sound-bars {
+        height: 20px;
+        position: absolute;
+        width: 20px;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
 
-.ranking_contestant_button--disabled {
-background-color: #b3b3b3;
-height: 41px;
-border: 0px;
-color: #ffffff;
-font-size: 13.58px;
-font-weight: 600;
-text-transform: uppercase;
-margin-top: auto;
-}
+    .bar {
+        background: #fff;
+        bottom: 1px;
+        height: 3px;
+        position: absolute;
+        width: 3px;
+        -webkit-animation: sound 0ms -800ms linear infinite alternate;
+        animation: sound 0ms -800ms linear infinite alternate;
+    }
 
-.sound-bars {
-height: 20px;
-position: absolute;
-width: 20px;
-top: 50%;
-left: 50%;
--webkit-transform: translate(-50%, -50%);
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-}
+    .ranking_contestant--disabled {
+        background-image: url("//static.prsa.pl/6148f627-7e6d-4bbe-851e-e6e5e437e2a6.file");
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        background-repeat: no-repeat;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        top: 0;
+        z-index: 10;
+        flex-direction: column;
+    }
 
-.bar {
-background: #fff;
-bottom: 1px;
-height: 3px;
-position: absolute;
-width: 3px;
--webkit-animation: sound 0ms -800ms linear infinite alternate;
-animation: sound 0ms -800ms linear infinite alternate;
-}
+    .ranking_contestant--disabled--notvisible {
+        display: none;
+    }
 
-.ranking_contestant--disabled {
-background-image: url("//static.prsa.pl/6148f627-7e6d-4bbe-851e-e6e5e437e2a6.file");
-height: 100%;
-width: 100%;
-position: absolute;
-background-repeat: no-repeat;
-display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
--webkit-box-pack: center;
--ms-flex-pack: center;
-justify-content: center;
--webkit-box-align: center;
--ms-flex-align: center;
-align-items: center;
-top: 0;
-z-index: 10;
-flex-direction: column;
-}
+    .ranking_contestant_button--disabled_img {
+        position: relative;
+    }
 
-.ranking_contestant--disabled--notvisible {
-display: none;
-}
+    .ranking_contestant--disabled_number {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background-color: black;
+        font-size: 54px;
+        color: #ffffff;
+        font-family: 'Titillium Web', sans-serif;
+        font-weight: 700;
+        text-align: center;
+        padding-top: 9px;
+        margin-top: -30px;
+    }
 
-.ranking_contestant_button--disabled_img {
-position: relative;
-}
+    .ranking_contestant--disabled_paragraph {
+        color: #ffffff;
+        font-size: 16.66px;
+        font-weight: 700;
+        font-family: 'Titillium Web', sans-serif;
+        text-transform: uppercase;
+        width: 63px;
+        margin-top: -20px;
+        margin-left: -20px;
+        line-height: 1.2;
+    }
 
-.ranking_contestant--disabled_number {
-width: 90px;
-height: 90px;
-border-radius: 50%;
-background-color: black;
-font-size: 54px;
-color: #ffffff;
-font-family: 'Titillium Web', sans-serif;
-font-weight: 700;
-text-align: center;
-padding-top: 9px;
-margin-top: -30px;
-}
+    .ranking_contestant--disabled_logo {
+        margin-top: 42px;
+        height: 28px;
+    }
 
-.ranking_contestant--disabled_paragraph {
-color: #ffffff;
-font-size: 16.66px;
-font-weight: 700;
-font-family: 'Titillium Web', sans-serif;
-text-transform: uppercase;
-width: 63px;
-margin-top: -20px;
-margin-left: -20px;
-line-height: 1.2;
-}
+    @-webkit-keyframes sound {
+        0% {
+            opacity: .35;
+            height: 3px;
+        }
 
-.ranking_contestant--disabled_logo {
-margin-top: 42px;
-height: 28px;
-}
+        100% {
+            opacity: 1;
+            height: 20px;
+        }
+    }
 
-@-webkit-keyframes sound {
-0% {
-opacity: .35;
-height: 3px;
-}
+    @keyframes sound {
+        0% {
+            opacity: .35;
+            height: 3px;
+        }
 
-100% {
-opacity: 1;
-height: 20px;
-}
-}
+        100% {
+            opacity: 1;
+            height: 20px;
+        }
+    }
 
-@keyframes sound {
-0% {
-opacity: .35;
-height: 3px;
-}
+    .bar:nth-child(1) {
+        left: 1px;
+        -webkit-animation-duration: 474ms;
+        animation-duration: 474ms;
+    }
 
-100% {
-opacity: 1;
-height: 20px;
-}
-}
+    .bar:nth-child(2) {
+        left: 5px;
+        -webkit-animation-duration: 433ms;
+        animation-duration: 433ms;
+    }
 
-.bar:nth-child(1) {
-left: 1px;
--webkit-animation-duration: 474ms;
-animation-duration: 474ms;
-}
+    .bar:nth-child(3) {
+        left: 9px;
+        -webkit-animation-duration: 407ms;
+        animation-duration: 407ms;
+    }
 
-.bar:nth-child(2) {
-left: 5px;
--webkit-animation-duration: 433ms;
-animation-duration: 433ms;
-}
+    .bar:nth-child(4) {
+        left: 13px;
+        -webkit-animation-duration: 458ms;
+        animation-duration: 458ms;
+    }
 
-.bar:nth-child(3) {
-left: 9px;
--webkit-animation-duration: 407ms;
-animation-duration: 407ms;
-}
-
-.bar:nth-child(4) {
-left: 13px;
--webkit-animation-duration: 458ms;
-animation-duration: 458ms;
-}
-
-.bar:nth-child(5) {
-left: 17px;
--webkit-animation-duration: 400ms;
-animation-duration: 400ms;
-}
+    .bar:nth-child(5) {
+        left: 17px;
+        -webkit-animation-duration: 400ms;
+        animation-duration: 400ms;
+    }
 </style>
-
