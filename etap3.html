@@ -2,394 +2,117 @@
 
 <!--  stage-3 React -->
 
-<script>
-    "use strict";
-
-    function _instanceof(left, right) {
-        if (
-            right != null &&
-            typeof Symbol !== "undefined" &&
-            right[Symbol.hasInstance]
-        ) {
-            return right[Symbol.hasInstance](left);
-        } else {
-            return left instanceof right;
-        }
-    }
-
-    function _typeof(obj) {
-        if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-            _typeof = function _typeof(obj) {
-                return typeof obj;
-            };
-        } else {
-            _typeof = function _typeof(obj) {
-                return obj &&
-                    typeof Symbol === "function" &&
-                    obj.constructor === Symbol &&
-                    obj !== Symbol.prototype ?
-                    "symbol" :
-                    typeof obj;
+<script type="text/babel">
+    class ContainerWinners extends React.Component {
+        _isMounted = false;
+        constructor(props) {
+            super(props);
+            this.state = {
+                data: []
             };
         }
-        return _typeof(obj);
-    }
-
-    function _extends() {
-        _extends =
-            Object.assign ||
-            function (target) {
-                for (var i = 1; i < arguments.length; i++) {
-                    var source = arguments[i];
-                    for (var key in source) {
-                        if (Object.prototype.hasOwnProperty.call(source, key)) {
-                            target[key] = source[key];
-                        }
-                    }
-                }
-                return target;
-            };
-        return _extends.apply(this, arguments);
-    }
-
-    function _classCallCheck(instance, Constructor) {
-        if (!_instanceof(instance, Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    function _defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];
-            descriptor.enumerable = descriptor.enumerable || false;
-            descriptor.configurable = true;
-            if ("value" in descriptor) descriptor.writable = true;
-            Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }
-
-    function _createClass(Constructor, protoProps, staticProps) {
-        if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-        if (staticProps) _defineProperties(Constructor, staticProps);
-        return Constructor;
-    }
-
-    function _possibleConstructorReturn(self, call) {
-        if (call && (_typeof(call) === "object" || typeof call === "function")) {
-            return call;
-        }
-        return _assertThisInitialized(self);
-    }
-
-    function _getPrototypeOf(o) {
-        _getPrototypeOf = Object.setPrototypeOf ?
-            Object.getPrototypeOf :
-            function _getPrototypeOf(o) {
-                return o.__proto__ || Object.getPrototypeOf(o);
-            };
-        return _getPrototypeOf(o);
-    }
-
-    function _assertThisInitialized(self) {
-        if (self === void 0) {
-            throw new ReferenceError(
-                "this hasn't been initialised - super() hasn't been called"
+        render() {
+            return (
+                <div className="srebrne-usta-2019-ranking">
+                    {this.state.data.slice(0,3).map((contestant, index) => (
+                        <ContestantWinner
+                            key={index}
+                            index={index}
+                            {...contestant}
+                        />
+                    ))}
+                </div>
             );
         }
-        return self;
-    }
-
-    function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-            throw new TypeError("Super expression must either be null or a function");
-        }
-        subClass.prototype = Object.create(superClass && superClass.prototype, {
-            constructor: {
-                value: subClass,
-                writable: true,
-                configurable: true
-            }
-        });
-        if (superClass) _setPrototypeOf(subClass, superClass);
-    }
-
-    function _setPrototypeOf(o, p) {
-        _setPrototypeOf =
-            Object.setPrototypeOf ||
-            function _setPrototypeOf(o, p) {
-                o.__proto__ = p;
-                return o;
-            };
-        return _setPrototypeOf(o, p);
-    }
-
-    function _defineProperty(obj, key, value) {
-        if (key in obj) {
-            Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: true,
-                configurable: true,
-                writable: true
-            });
-        } else {
-            obj[key] = value;
-        }
-        return obj;
-    }
-
-    var ContainerWinners =
-        /*#__PURE__*/
-        (function (_React$Component) {
-            _inherits(ContainerWinners, _React$Component);
-
-            function ContainerWinners(props) {
-                var _this;
-
-                _classCallCheck(this, ContainerWinners);
-
-                _this = _possibleConstructorReturn(
-                    this,
-                    _getPrototypeOf(ContainerWinners).call(this, props)
-                );
-
-                _defineProperty(_assertThisInitialized(_this), "_isMounted", false);
-
-                _this.state = {
-                    data: []
-                };
-                return _this;
-            }
-
-            _createClass(ContainerWinners, [{
-                    key: "render",
-                    value: function render() {
-                        return React.createElement(
-                            "div", {
-                                className: "srebrne-usta-2019-ranking"
-                            },
-                            this.state.data.slice(0, 3).map(function (contestant, index) {
-                                return React.createElement(
-                                    ContestantWinner,
-                                    _extends({
-                                            key: index,
-                                            index: index
-                                        },
-                                        contestant
-                                    )
-                                );
-                            })
-                        );
-                    }
-                },
-                {
-                    key: "componentDidMount",
-                    value: function componentDidMount() {
-                        var _this2 = this;
-
-                        this._isMounted = true;
-                        var url = "https://sonda.polskieradio.pl/api/probe/getoptions/1";
-                        axios.get(url).then(function (result) {
-                            if (_this2._isMounted) {
-                                _this2.setState({
-                                    data: result.data
-                                });
-                            }
-                        });
-                    }
-                },
-                {
-                    key: "componentWillUnmount",
-                    value: function componentWillUnmount() {
-                        this._isMounted = false;
-                    }
-                }
-            ]);
-
-            return ContainerWinners;
-        })(React.Component);
-
-    var ContestantWinner =
-        /*#__PURE__*/
-        (function (_React$Component2) {
-            _inherits(ContestantWinner, _React$Component2);
-
-            function ContestantWinner(props) {
-                var _this3;
-
-                _classCallCheck(this, ContestantWinner);
-
-                _this3 = _possibleConstructorReturn(
-                    this,
-                    _getPrototypeOf(ContestantWinner).call(this, props)
-                );
-
-                _defineProperty(_assertThisInitialized(_this3), "playRecording", function (
-                    audio,
-                    e
-                ) {
-                    e.preventDefault(); // audio.load();
-
-                    audio.play();
-
-                    _this3.toggleSoundBars();
-
-                    audio.onended = function () {
-                        _this3.toggleSoundBars();
-                    };
+        componentDidMount() {
+            this._isMounted = true;
+            const url = "https://sonda.polskieradio.pl/api/probe/getoptions/1";
+            axios.get(url).then(result => {
+                if (this._isMounted) {
+                this.setState({
+                    data: result.data
                 });
-
-                _this3.state = {
-                    active: false,
-                    soundBars: false,
-                    audio: null,
-                    audioFinished: false
-                };
-                return _this3;
             }
-
-            _createClass(ContestantWinner, [{
-                    key: "componentDidMount",
-                    value: function componentDidMount() {
-                        this.setState({
-                            audio: new Audio(this.props.Sound)
-                        });
-                    }
-                },
+            });
+        }
+        componentWillUnmount() {
+            this._isMounted = false;
+        }
+    }
+    class ContestantWinner extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                active: false,
+                soundBars: false,
+                audio: null,
+                audioFinished: false
+            };
+        }
+        componentDidMount() {
+            this.setState({
+                audio: new Audio(this.props.Sound)
+            });
+        }
+        toggleSoundBars() {
+            this.setState(
                 {
-                    key: "toggleSoundBars",
-                    value: function toggleSoundBars() {
-                        var _this4 = this;
-
-                        this.setState({
-                                soundBars: !this.state.soundBars,
-                                active: !this.state.active
-                            },
-                            function () {
-                                _this4.state.soundBars === false ?
-                                    _this4.state.audio.pause() :
-                                    _this4.state.audio.play();
-                            }
-                        );
-                    }
+                    soundBars: !this.state.soundBars,
+                    active: !this.state.active
                 },
-                {
-                    key: "render",
-                    value: function render() {
-                        var _this5 = this;
-
-                        return React.createElement(
-                            "div", {
-                                className: this.props.index === 0 ? "ranking_contestant--winner" :
-                                    null
-                            },
-                            React.createElement(
-                                "div", {
-                                    className: ""
-                                        .concat(
-                                            this.props.index === 1 ?
-                                            "ranking_contestant--2" :
-                                            "ranking_contestant",
-                                            " "
-                                        )
-                                        .concat(
-                                            this.props.index === 2 ?
-                                            "ranking_contestant--3" :
-                                            "ranking_contestant"
-                                        )
-                                },
-                                React.createElement(
-                                    "div", {
-                                        className: "ranking_contestant_img-wrapper"
-                                    },
-                                    React.createElement("img", {
-                                        className: "ranking_contestant_img",
-                                        src: this.props.ImagePath
-                                    }),
-                                    React.createElement(
-                                        "button", {
-                                            className: "ranking_contestant_play",
-                                            onClick: function onClick(e) {
-                                                return _this5.playRecording(_this5.state.audio,
-                                                    e);
-                                            }
-                                        },
-                                        React.createElement("i", {
-                                            className: this.state.soundBars ? "null" :
-                                                "fa fa-play"
-                                        }),
-                                        React.createElement(
-                                            "div", {
-                                                className: this.state.soundBars ? "sound-bars" :
-                                                    "null"
-                                            },
-                                            React.createElement("div", {
-                                                className: this.state.soundBars ? "bar" : "null"
-                                            }),
-                                            React.createElement("div", {
-                                                className: this.state.soundBars ? "bar" : "null"
-                                            }),
-                                            React.createElement("div", {
-                                                className: this.state.soundBars ? "bar" : "null"
-                                            }),
-                                            React.createElement("div", {
-                                                className: this.state.soundBars ? "bar" : "null"
-                                            }),
-                                            React.createElement("div", {
-                                                className: this.state.soundBars ? "bar" : "null"
-                                            })
-                                        )
-                                    )
-                                ),
-                                React.createElement(
-                                    "h2", {
-                                        className: "ranking_contestant_title"
-                                    },
-                                    this.props.Name
-                                ),
-                                React.createElement(
-                                    "p", {
-                                        className: "ranking_contestant_description"
-                                    },
-                                    this.props.Description
-                                )
-                            )
-                        );
-                    }
+                () => {
+                    this.state.soundBars === false
+                        ? this.state.audio.pause()
+                        : this.state.audio.play();
                 }
-            ]);
-
-            return ContestantWinner;
-        })(React.Component);
-
-    var AppWinners =
-        /*#__PURE__*/
-        (function (_React$Component3) {
-            _inherits(AppWinners, _React$Component3);
-
-            function AppWinners() {
-                _classCallCheck(this, AppWinners);
-
-                return _possibleConstructorReturn(
-                    this,
-                    _getPrototypeOf(AppWinners).apply(this, arguments)
-                );
-            }
-
-            _createClass(AppWinners, [{
-                key: "render",
-                value: function render() {
-                    return React.createElement(ContainerWinners, null);
-                }
-            }]);
-
-            return AppWinners;
-        })(React.Component);
-
-    ReactDOM.render(
-        React.createElement(AppWinners, null),
-        document.getElementById("root2")
-    );
+            );
+        }
+        playRecording = (audio, e) => {
+            e.preventDefault();
+            // audio.load();
+            audio.play();
+            this.toggleSoundBars();
+            audio.onended = () => {
+                this.toggleSoundBars();
+            };
+        };
+        render() {
+            return (
+                <div className={this.props.index === 0 ? "ranking_contestant--winner" : null}>
+                    <div
+                        className={`${this.props.index === 1 ? "ranking_contestant--2" : "ranking_contestant"} ${this.props.index === 2 ? "ranking_contestant--3" : "ranking_contestant"}`}>
+                        <div className="ranking_contestant_img-wrapper">
+                            <img className="ranking_contestant_img" src={this.props.ImagePath}/>
+                            <button
+                                className="ranking_contestant_play"
+                                onClick={e => this.playRecording(this.state.audio, e)}>
+                                <i className={this.state.soundBars ? "null" : "fa fa-play"}/>
+                                <div className={this.state.soundBars ? "sound-bars" : "null"}>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                    <div className={this.state.soundBars ? "bar" : "null"}/>
+                                </div>
+                            </button>
+                        </div>
+                        <h2 className="ranking_contestant_title">{this.props.Name}</h2>
+                        <p className="ranking_contestant_description">
+                            {this.props.Description}
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+    }
+    class AppWinners extends React.Component {
+        render() {
+            return <ContainerWinners/>;
+        }
+    }
+    ReactDOM.render(<AppWinners/>, document.getElementById("root2"));
 </script>
+
 
 <!--  stage-3 style -->
 
